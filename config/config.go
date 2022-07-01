@@ -17,6 +17,7 @@ var (
 	MinioEndpoint      string
 	MinioAccessKeyId   string
 	MinioAccessKeyPass string
+	MinioBucketName    string
 	EnvMode            string
 )
 
@@ -39,5 +40,6 @@ func init() {
 	MinioEndpoint = os.Getenv("MINIO_ENDPOINT")
 	MinioAccessKeyId = os.Getenv("MINIO_ACCESS_KEY_ID")
 	MinioAccessKeyPass = os.Getenv("MINIO_ACCESS_KEY_PASS")
+	MinioBucketName = os.Getenv("MINIO_BUCKET_NAME")
 	EnvMode = os.Getenv("ENV_MODE")
 }
