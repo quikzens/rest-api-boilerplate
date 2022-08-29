@@ -11,15 +11,7 @@ import (
 )
 
 // DB Instance
-var DB = connectDB()
-
-// Mongo Collection
-var (
-	UserColl = DB.Collection("users")
-)
-
-// connectDB open mongodb connection, check the opened connection, and return the db client
-func connectDB() *mongo.Database {
+var DB = func() *mongo.Database {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(config.DbSource))
 	if err != nil {
 		log.Fatal(err)
@@ -32,4 +24,9 @@ func connectDB() *mongo.Database {
 
 	log.Println("successfully connecting to database")
 	return client.Database(config.DbName)
-}
+}()
+
+// Mongo Collection
+var (
+	UserColl = DB.Collection("users")
+)

@@ -9,16 +9,22 @@ import (
 )
 
 var (
-	ServerAddress      string
-	TokenSecretKey     string
-	TokenDuration      time.Duration
-	DbSource           string
-	DbName             string
+	ServerAddress string
+	EnvMode       string
+
+	// token
+	TokenSecretKey string
+	TokenDuration  time.Duration
+
+	// database
+	DbSource string
+	DbName   string
+
+	// minio
 	MinioEndpoint      string
 	MinioAccessKeyId   string
 	MinioAccessKeyPass string
 	MinioBucketName    string
-	EnvMode            string
 )
 
 var (
@@ -33,13 +39,16 @@ func init() {
 	}
 
 	ServerAddress = os.Getenv("SERVER_ADDRESS")
+	EnvMode = os.Getenv("ENV_MODE")
+
 	TokenSecretKey = os.Getenv("TOKEN_SECRET_KEY")
 	TokenDuration, _ = time.ParseDuration(os.Getenv("TOKEN_DURATION"))
+
 	DbSource = os.Getenv("DB_SOURCE")
 	DbName = os.Getenv("DB_NAME")
+
 	MinioEndpoint = os.Getenv("MINIO_ENDPOINT")
 	MinioAccessKeyId = os.Getenv("MINIO_ACCESS_KEY_ID")
 	MinioAccessKeyPass = os.Getenv("MINIO_ACCESS_KEY_PASS")
 	MinioBucketName = os.Getenv("MINIO_BUCKET_NAME")
-	EnvMode = os.Getenv("ENV_MODE")
 }
