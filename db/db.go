@@ -10,8 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-// DB Instance
-var DB = func() *mongo.Database {
+// db Instance
+var db = func() *mongo.Database {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(config.DbSource))
 	if err != nil {
 		log.Fatal(err)
@@ -28,5 +28,5 @@ var DB = func() *mongo.Database {
 
 // Mongo Collection
 var (
-	UserColl = DB.Collection("users")
+	UserColl = db.Collection("users")
 )
