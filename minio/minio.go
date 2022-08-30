@@ -28,10 +28,7 @@ var (
 )
 
 // Keep Minio global instance for usage across the app
-var MinioClient = connectMinio()
-
-// Initialize minio client object instance
-func connectMinio() *miniosdk.Client {
+var minioClient = func() *miniosdk.Client {
 	minioClient, err := miniosdk.New(endpoint, &miniosdk.Options{
 		Creds:  credentials.NewStaticV4(accessKeyID, accessKeyPass, ""),
 		Secure: useSSL,
@@ -41,7 +38,7 @@ func connectMinio() *miniosdk.Client {
 	}
 
 	return minioClient
-}
+}()
 
 // Create new Minio Object
 func CreateObject(object *multipart.FileHeader, folder string) (string, error) {
@@ -54,7 +51,7 @@ func CreateObject(object *multipart.FileHeader, folder string) (string, error) {
 	objectFullPath := fmt.Sprintf("%v/%v", folder, objectName)
 
 	// upload object to minio
-	_, err = MinioClient.PutObject(context.TODO(), bucketName, objectFullPath, file, object.Size, miniosdk.PutObjectOptions{})
+	_, err = minioClient.PutObject(context.TODO(), bucketName, objectFullPath, file, object.Size, miniosdk.PutObjectOptions{})
 	if err != nil {
 		return "", err
 	}
@@ -67,7 +64,7 @@ func RemoveObject(folder string, deletedObject string) error {
 	deletedObjectFullPath := fmt.Sprintf("%v/%v", folder, deletedObject)
 
 	if deletedObject != "" {
-		err := MinioClient.RemoveObject(context.TODO(), bucketName, deletedObjectFullPath, miniosdk.RemoveObjectOptions{})
+		err := minioClient.RemoveObject(context.TODO(), bucketName, deletedObjectFullPath, miniosdk.RemoveObjectOptions{})
 		if err != nil {
 			return err
 		}
